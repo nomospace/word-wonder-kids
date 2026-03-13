@@ -34,9 +34,8 @@ jobs:
       - name: Install dependencies
         working-directory: ./app
         run: |
-          npm ci
-          # 增加 Node.js 内存限制
           export NODE_OPTIONS="--max-old-space-size=4096"
+          npm install
 
       - name: Build
         working-directory: ./app
