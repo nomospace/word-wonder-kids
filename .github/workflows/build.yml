@@ -44,7 +44,7 @@ jobs:
         working-directory: ./app
         run: |
           export NODE_OPTIONS="--max-old-space-size=4096"
-          npm ci
+          npm install
 
       - name: Build
         working-directory: ./app
