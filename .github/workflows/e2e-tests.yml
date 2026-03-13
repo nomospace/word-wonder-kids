@@ -33,7 +33,12 @@ jobs:
       - name: 📦 安装依赖
         working-directory: ./app
         run: |
-          npm ci
+          # 优先使用 npm ci (严格模式)，失败则 fallback 到 npm install
+          if ! npm ci; then
+            echo "⚠️  npm ci 失败，清理缓存后重试 npm install"
+            rm -rf node_modules
+            npm install
+          fi
       
       - name: 🎭 安装 Playwright
         working-directory: ./app
@@ -95,7 +100,13 @@ jobs:
       
       - name: 📦 安装依赖
         working-directory: ./app
-        run: npm ci
+        run: |
+          # 优先使用 npm ci (严格模式)，失败则 fallback 到 npm install
+          if ! npm ci; then
+            echo "⚠️  npm ci 失败，清理缓存后重试 npm install"
+            rm -rf node_modules
+            npm install
+          fi
       
       - name: 🎭 安装 Playwright
         working-directory: ./app
