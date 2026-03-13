@@ -15,7 +15,8 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
-    "lint": "ng lint"
+    "lint": "ng lint",
+"ci:check": "../scripts/ci-check.sh"
   },
   "private": true,
   "dependencies": {
