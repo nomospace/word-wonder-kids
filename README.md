@@ -82,15 +82,12 @@ npm install -g angular-cli-ghpages
 ng deploy --base-href=/word-wonder-kids/
 ```
 
-## 📱 响应式设计
+## 📱 应用预览
 
-应用支持 Web 和移动端设备：
+### 主界面
+![App Preview](./screenshots/app-preview.png)
 
-### Web 视图
-![Web View](./screenshots/web-view.png)
-
-### 移动端视图
-![Mobile View](./screenshots/mobile-view.png)
+应用采用响应式设计，支持 Web 和移动端设备。
 
 ## 🎮 游戏模式
 
