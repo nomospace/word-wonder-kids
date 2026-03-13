@@ -222,6 +222,15 @@ export class WordCardComponent {
 
   playAudio(event: Event): void {
     event.stopPropagation();
+    console.log('[WordCard] 播放音频:', this.word.english);
+    
+    // 检查 TTS 支持
+    if (!this.ttsService.isSupported()) {
+      console.error('[WordCard] 浏览器不支持 TTS');
+      alert('您的浏览器不支持语音播放功能，请尝试使用 Chrome、Edge 或 Safari');
+      return;
+    }
+    
     this.ttsService.speakWord(this.word.english);
     this.audioPlayed.emit();
   }

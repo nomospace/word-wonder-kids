@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class TtsService {
   private synth: SpeechSynthesis | null = null;
   private voice: SpeechSynthesisVoice | null = null;
+  private isInitialized = false;
 
   constructor() {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -22,10 +23,14 @@ export class TtsService {
 
     const load = () => {
       const voices = this.synth!.getVoices();
+      console.log('[TTS] 可用语音数量:', voices.length);
       // 优先选择英语语音
       this.voice = voices.find(v => v.lang === 'en-US') || 
                    voices.find(v => v.lang.startsWith('en')) ||
+                   voices.find(v => v.lang === 'en-GB') ||
                    voices[0] || null;
+      console.log('[TTS] 选中语音:', this.voice?.name, this.voice?.lang);
+      this.isInitialized = true;
     };
 
     load();
@@ -40,7 +45,16 @@ export class TtsService {
    * 朗读文本
    */
   speak(text: string, rate: number = 0.8, pitch: number = 1): void {
-    if (!this.synth || !text) return;
+    if (!this.synth || !text) {
+      console.warn('[TTS] 不支持或文本为空');
+      return;
+    }
+
+    // 确保语音已加载
+    if (!this.isInitialized) {
+      console.log('[TTS] 语音未初始化，尝试重新加载...');
+      this.loadVoices();
+    }
 
     // 取消当前正在播放的语音
     this.synth.cancel();
@@ -54,6 +68,16 @@ export class TtsService {
       utterance.voice = this.voice;
     }
 
+    // 添加错误处理
+    utterance.onerror = (event) => {
+      console.error('[TTS] 播放错误:', event);
+    };
+    
+    utterance.onend = () => {
+      console.log('[TTS] 播放完成');
+    };
+
+    console.log('[TTS] 开始播放:', text);
     this.synth.speak(utterance);
   }
 
