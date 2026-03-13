@@ -1,24 +1,24 @@
-# Word Wonder Kids H5 🦞
+# Word Wonder Kids H5
 
 > 儿童英语单词学习应用 - Angular H5 版本
 
 [![Build Status](https://github.com/nomospace/word-wonder-kids/actions/workflows/build.yml/badge.svg)](https://github.com/nomospace/word-wonder-kids/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 📱 项目介绍
+## 项目介绍
 
 专为儿童设计的英语单词学习 Web 应用，支持 Web 和移动端设备。通过游戏化方式帮助孩子记住核心英语单词，支持认读、跟读、拼写练习。
 
-### ✨ 核心功能
+### 核心功能
 
 - 🎓 **年级选择** - 支持学前班到六年级，可配置选择
-- 🎴 **单词卡片** - 图文 + 发音 + 例句，点击即学
+- 📖 **单词卡片** - 图文 + 发音 + 例句，点击即学
 - 🎮 **游戏化练习** - 连连看、听音选词、拼写挑战、单词测验
-- 📊 **进度追踪** - 学习报告和掌握程度统计
+- 📈 **进度追踪** - 学习报告和掌握程度统计
 - 🔊 **TTS 发音** - 浏览器原生语音合成
-- 📴 **离线使用** - PWA 支持，可离线学习
+- 💾 **离线使用** - PWA 支持，可离线学习
 
-### 🏗️ 技术栈
+### 技术栈
 
 - **框架**: Angular 17+
 - **语言**: TypeScript
@@ -27,7 +27,7 @@
 - **发音**: Web Speech API (TTS)
 - **部署**: GitHub Pages
 
-### 📚 单词库来源
+### 单词库来源
 
 - **Oxford 3000** - 牛津核心 3000 词
 - **Dolch Sight Words** - 最常见的 220 个英语单词
@@ -45,7 +45,7 @@
 - 动作 (Actions)
 - 情感 (Emotions)
 
-## 🚀 快速开始
+## 快速开始
 
 ### 环境要求
 
@@ -82,28 +82,28 @@ npm install -g angular-cli-ghpages
 ng deploy --base-href=/word-wonder-kids/
 ```
 
-## 📱 应用预览
+## 应用预览
 
 ### 主界面
 ![App Preview](./screenshots/app-preview.png)
 
 应用采用响应式设计，支持 Web 和移动端设备。
 
-## 🎮 游戏模式
+## 游戏模式
 
 1. **连连看** - 匹配单词和中文意思
 2. **听音选词** - 听发音选择正确的单词
 3. **拼写挑战** - 补全字母拼写单词
 4. **单词测验** - 选择题测试
 
-## 📊 学习进度
+## 学习进度
 
 - 总体掌握率统计
 - 按分类掌握情况
 - 需要复习的单词
 - 已掌握的单词列表
 
-## ⚙️ 设置
+## 设置
 
 - TTS 语速和音调调节
 - 每日学习目标
@@ -111,7 +111,7 @@ ng deploy --base-href=/word-wonder-kids/
 - 字体大小
 - 深色模式
 
-## 📦 项目结构
+## 项目结构
 
 ```
 app/
@@ -144,10 +144,10 @@ app/
 └── tsconfig.json
 ```
 
-## 📄 许可证
+## 许可证
 
 MIT License
 
 ---
 
-Made with 🦞 by [nomospace](https://github.com/nomospace)
+Made with ❤️ by [nomospace](https://github.com/nomospace)
