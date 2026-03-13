@@ -1,16 +1,16 @@
-name: Build and Deploy
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
 
+# 只允许当前 workflow 对 pages 的部署权限
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 同一时间只允许一个部署任务
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -54,7 +54,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     
     steps:
       - name: Deploy to GitHub Pages
