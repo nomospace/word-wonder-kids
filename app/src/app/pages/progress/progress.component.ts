@@ -10,24 +10,26 @@ import { WordService } from '../../services/word.service';
   template: `
     <div class="progress-page">
       <div class="page-header">
-        <a routerLink="/" class="back-btn">⬅️ 返回</a>
-        <h1>📊 学习进度</h1>
+        <a routerLink="/" class="back-btn">
+          <span class="material-icons-round">arrow_back</span> 返回
+        </a>
+        <h1><span class="material-icons-round">insights</span> 学习进度</h1>
       </div>
 
       <!-- 总体统计 -->
       <div class="stats-overview">
         <div class="stat-card">
-          <span class="stat-icon">📚</span>
+          <span class="stat-icon material-icons-round">menu_book</span>
           <span class="stat-value">{{ stats.totalWords }}</span>
           <span class="stat-label">总单词数</span>
         </div>
         <div class="stat-card">
-          <span class="stat-icon">✅</span>
+          <span class="stat-icon material-icons-round">check_circle</span>
           <span class="stat-value">{{ stats.learnedWords }}</span>
           <span class="stat-label">已掌握</span>
         </div>
         <div class="stat-card">
-          <span class="stat-icon">📈</span>
+          <span class="stat-icon material-icons-round">trending_up</span>
           <span class="stat-value">{{ stats.masteryRate }}%</span>
           <span class="stat-label">掌握率</span>
         </div>
@@ -208,7 +210,23 @@ import { WordService } from '../../services/word.service';
     }
 
     .cat-icon {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+    }
+
+    .material-icons-round {
+      font-family: 'Material Icons Round';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
     }
 
     .cat-name {

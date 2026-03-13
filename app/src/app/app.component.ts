@@ -16,7 +16,7 @@ import { Word } from './models/word.model';
       <header class="app-header">
         <div class="header-content">
           <h1 class="app-title">
-            <span class="title-icon">🦞</span>
+            <span class="title-icon material-icons-round">pets</span>
             Word Wonder Kids
           </h1>
           <p class="app-subtitle">快乐学英语，好玩不枯燥！</p>
@@ -58,7 +58,7 @@ import { Word } from './models/word.model';
               ⬅️ 上一个
             </button>
             <button class="control-btn random" (click)="randomWord()">
-              🎲 随机
+              <span class="material-icons-round" style="font-size:1rem;vertical-align:middle;margin-right:4px;">shuffle</span>随机
             </button>
             <button class="control-btn next" (click)="nextWord()">
               下一个 ➡️
@@ -69,22 +69,22 @@ import { Word } from './models/word.model';
         <!-- 功能入口 -->
         <div class="features-grid">
           <a routerLink="/learn" class="feature-card learn">
-            <span class="feature-icon">📖</span>
+            <span class="feature-icon material-icons-round">menu_book</span>
             <span class="feature-title">学习</span>
             <span class="feature-desc">单词卡片学习</span>
           </a>
           <a routerLink="/game" class="feature-card game">
-            <span class="feature-icon">🎮</span>
+            <span class="feature-icon material-icons-round">sports_esports</span>
             <span class="feature-title">游戏</span>
             <span class="feature-desc">趣味练习</span>
           </a>
           <a routerLink="/progress" class="feature-card progress">
-            <span class="feature-icon">📊</span>
+            <span class="feature-icon material-icons-round">insights</span>
             <span class="feature-title">进度</span>
             <span class="feature-desc">学习报告</span>
           </a>
           <a routerLink="/settings" class="feature-card settings">
-            <span class="feature-icon">⚙️</span>
+            <span class="feature-icon material-icons-round">settings</span>
             <span class="feature-title">设置</span>
             <span class="feature-desc">个性化配置</span>
           </a>
@@ -94,23 +94,23 @@ import { Word } from './models/word.model';
       <!-- 底部导航 -->
       <nav class="bottom-nav">
         <a routerLink="/" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">🏠</span>
+          <span class="nav-icon material-icons-round">home</span>
           <span class="nav-label">首页</span>
         </a>
         <a routerLink="/learn" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">📚</span>
+          <span class="nav-icon material-icons-round">school</span>
           <span class="nav-label">学习</span>
         </a>
         <a routerLink="/game" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">🎮</span>
+          <span class="nav-icon material-icons-round">sports_esports</span>
           <span class="nav-label">游戏</span>
         </a>
         <a routerLink="/progress" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">📈</span>
+          <span class="nav-icon material-icons-round">trending_up</span>
           <span class="nav-label">进度</span>
         </a>
         <a routerLink="/settings" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">⚙️</span>
+          <span class="nav-icon material-icons-round">settings</span>
           <span class="nav-label">设置</span>
         </a>
       </nav>
@@ -143,6 +143,22 @@ import { Word } from './models/word.model';
 
     .title-icon {
       font-size: 2.5rem;
+    }
+
+    .material-icons-round {
+      font-family: 'Material Icons Round';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
     }
 
     .app-subtitle {
@@ -282,7 +298,7 @@ import { Word } from './models/word.model';
     }
 
     .feature-icon {
-      font-size: 2.5rem;
+      font-size: 3rem;
       margin-bottom: 0.5rem;
     }
 
@@ -326,7 +342,7 @@ import { Word } from './models/word.model';
     }
 
     .nav-icon {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       margin-bottom: 0.25rem;
     }
 
