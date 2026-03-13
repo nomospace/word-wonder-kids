@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Word Wonder Kids - 快乐学英语</title>
+  <base href="/">
+  
+  <!-- 移动端优化 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Word Wonder">
+  
+  <!-- SEO 优化 -->
+  <meta name="description" content="Word Wonder Kids - 专为儿童设计的英语单词学习应用，游戏化学习，好玩不枯燥！支持 Oxford 3000、Dolch Sight Words、Fry Words 等权威词库。">
+  <meta name="keywords" content="英语单词，儿童英语，背单词，Oxford 3000, Dolch Sight Words, Fry Words, 学习英语">
+  <meta name="author" content="nomospace">
+  
+  <!-- PWA 配置 -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  
+  <!-- 预加载关键资源 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <app-root></app-root>
+  
+  <!-- 性能监控（可选） -->
+  <script>
+    // 记录页面加载时间
+    window.addEventListener('load', () => {
+      if (window.performance) {
+        const timing = window.performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+        console.log('Page load time:', loadTime, 'ms');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { GradeSelectorComponent } from './components/grade-selector/grade-selector.component';
 import { WordCardComponent } from './components/word-card/word-card.component';
-import { WordService } from '../services/word.service';
-import { Word } from '../models/word.model';
+import { WordService } from './services/word.service';
+import { Word } from './models/word.model';
 
 @Component({
   selector: 'app-root',

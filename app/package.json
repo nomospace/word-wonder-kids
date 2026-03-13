@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.17",
+    "@angular-devkit/build-webpack": "^0.2102.2",
     "@angular/cli": "^17.3.17",
     "@angular/compiler-cli": "^17.3.12",
     "@types/jasmine": "~5.1.0",
@@ -41,7 +42,10 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.4.2"
+    "lite-server": "^2.6.1",
+    "serve": "^14.2.6",
+    "typescript": "~5.4.2",
+    "vite": "^8.0.0"
   },
   "engines": {
     "node": ">=18.0.0",
