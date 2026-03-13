@@ -15,9 +15,9 @@ import { WordCardComponent } from '../../components/word-card/word-card.componen
     <div class="learn-page">
       <div class="page-header">
         <a routerLink="/" class="back-btn">
-          <span class="material-icons-round">arrow_back</span> 返回
+          <span>⬅️</span> 返回
         </a>
-        <h1><span class="material-icons-round">menu_book</span> 单词学习</h1>
+        <h1>📚 单词学习</h1>
       </div>
 
       <app-grade-selector></app-grade-selector>
@@ -44,7 +44,7 @@ import { WordCardComponent } from '../../components/word-card/word-card.componen
             <span class="word-cn">{{ word.chinese }}</span>
           </div>
           <button class="play-btn" (click)="playWord(word)">
-            <span class="material-icons-round">volume_up</span>
+            🔊
           </button>
           <div class="mastery-indicator">
             <span *ngFor="let i of [1,2,3,4,5]" 
@@ -59,13 +59,13 @@ import { WordCardComponent } from '../../components/word-card/word-card.componen
         <h3>学习模式</h3>
         <div class="mode-buttons">
           <button class="mode-btn" (click)="startPractice('flashcard')">
-            <span class="material-icons-round" style="font-size:1rem;vertical-align:middle;margin-right:4px;">view_kanban</span>卡片模式
+            📇 卡片模式
           </button>
           <button class="mode-btn" (click)="startPractice('quiz')">
-            <span class="material-icons-round" style="font-size:1rem;vertical-align:middle;margin-right:4px;">help_outline</span>测验模式
+            ❓ 测验模式
           </button>
           <button class="mode-btn" (click)="startPractice('spelling')">
-            <span class="material-icons-round" style="font-size:1rem;vertical-align:middle;margin-right:4px;">edit_note</span>拼写模式
+            ✏️ 拼写模式
           </button>
         </div>
       </div>
@@ -129,22 +129,6 @@ import { WordCardComponent } from '../../components/word-card/word-card.componen
     .cat-icon {
       font-size: 1.5rem;
       margin-bottom: 0.25rem;
-    }
-
-    .material-icons-round {
-      font-family: 'Material Icons Round';
-      font-weight: normal;
-      font-style: normal;
-      font-size: 24px;
-      line-height: 1;
-      letter-spacing: normal;
-      text-transform: none;
-      display: inline-block;
-      white-space: nowrap;
-      word-wrap: normal;
-      direction: ltr;
-      -webkit-font-feature-settings: 'liga';
-      -webkit-font-smoothing: antialiased;
     }
 
     .cat-name {
@@ -297,7 +281,25 @@ export class LearnComponent implements OnInit {
   }
 
   startPractice(mode: string): void {
-    // TODO: 实现练习模式
-    alert(`即将开始${mode}练习`);
+    const modeNames: Record<string, string> = {
+      'flashcard': '卡片模式',
+      'quiz': '测验模式',
+      'spelling': '拼写模式'
+    };
+    
+    // 切换到对应模式（这里可以扩展为实际的学习界面）
+    const words = this.filteredWords.length > 0 ? this.filteredWords : this.words;
+    if (words.length === 0) {
+      alert('暂无单词，请先选择年级哦！📚');
+      return;
+    }
+    
+    // 简单的反馈
+    const emojis: Record<string, string> = {
+      'flashcard': '📇',
+      'quiz': '❓',
+      'spelling': '✏️'
+    };
+    alert(`${emojis[mode]} 开始${modeNames[mode]}！\n\n共有 ${words.length} 个单词准备就绪～`);
   }
 }

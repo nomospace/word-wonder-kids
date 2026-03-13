@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 
 export const routes: Routes = [
-  { path: '', component: AppComponent },
+  { 
+    path: '', 
+    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) 
+  },
   { 
     path: 'learn', 
     loadComponent: () => import('./pages/learn/learn.component').then(m => m.LearnComponent) 

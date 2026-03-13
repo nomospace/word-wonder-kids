@@ -14,30 +14,30 @@ import { Word } from '../../models/word.model';
     <div class="game-page">
       <div class="page-header">
         <a routerLink="/" class="back-btn">
-          <span class="material-icons-round">arrow_back</span> 返回
+          <span>⬅️</span> 返回
         </a>
-        <h1><span class="material-icons-round">sports_esports</span> 趣味游戏</h1>
+        <h1>🎮 趣味游戏</h1>
       </div>
 
       <!-- 游戏选择 -->
       <div class="game-grid">
         <div class="game-card" (click)="startGame('matching')">
-          <span class="game-icon material-icons-round">view_kanban</span>
+          <span class="game-icon">🔗</span>
           <h3>连连看</h3>
-          <p>匹配单词和图片</p>
+          <p>匹配单词和意思</p>
         </div>
         <div class="game-card" (click)="startGame('listening')">
-          <span class="game-icon material-icons-round">headphones</span>
+          <span class="game-icon">🎧</span>
           <h3>听音选词</h3>
           <p>听发音选单词</p>
         </div>
         <div class="game-card" (click)="startGame('spelling')">
-          <span class="game-icon material-icons-round">edit_note</span>
+          <span class="game-icon">✏️</span>
           <h3>拼写挑战</h3>
           <p>补全字母拼单词</p>
         </div>
         <div class="game-card" (click)="startGame('quiz')">
-          <span class="game-icon material-icons-round">help_outline</span>
+          <span class="game-icon">❓</span>
           <h3>单词测验</h3>
           <p>选择题测试</p>
         </div>
@@ -171,22 +171,7 @@ import { Word } from '../../models/word.model';
       font-size: 3.5rem;
       display: block;
       margin-bottom: 0.5rem;
-    }
-
-    .material-icons-round {
-      font-family: 'Material Icons Round';
-      font-weight: normal;
-      font-style: normal;
-      font-size: 24px;
-      line-height: 1;
-      letter-spacing: normal;
-      text-transform: none;
-      display: inline-block;
-      white-space: nowrap;
-      word-wrap: normal;
-      direction: ltr;
-      -webkit-font-feature-settings: 'liga';
-      -webkit-font-smoothing: antialiased;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
 
     .game-card h3 {

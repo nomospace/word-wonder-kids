@@ -1,0 +1,148 @@
+# E2E Tests CI/CD Workflow
+# 在每次 commit 和 PR 时自动运行端到端测试
+
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: 🧪 E2E Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - name: 📥 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 🟢 设置 Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: app/package-lock.json
+      
+      - name: 📦 安装依赖
+        working-directory: ./app
+        run: |
+          npm ci
+      
+      - name: 🎭 安装 Playwright
+        working-directory: ./app
+        run: |
+          npm install -D @playwright/test
+          npx playwright install --with-deps
+      
+      - name: 🔨 构建应用
+        working-directory: ./app
+        run: npm run build
+      
+      - name: 🚀 启动开发服务器
+        working-directory: ./app
+        run: npm start &
+        env:
+          CI: true
+      
+      - name: ⏳ 等待服务器启动
+        run: |
+          echo "等待开发服务器启动..."
+          sleep 10
+          curl -f http://localhost:4200 || exit 1
+      
+      - name: 🧪 运行 E2E 测试
+        working-directory: ./app
+        run: npx playwright test
+      
+      - name: 📊 上传测试报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ matrix.node-version }}
+          path: playwright-report/
+          retention-days: 30
+      
+      - name: 📹 上传失败视频
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-videos-${{ matrix.node-version }}
+          path: test-results/
+          retention-days: 7
+
+  # 移动端专项测试
+  mobile-test:
+    name: 📱 Mobile Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 🟢 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: app/package-lock.json
+      
+      - name: 📦 安装依赖
+        working-directory: ./app
+        run: npm ci
+      
+      - name: 🎭 安装 Playwright
+        working-directory: ./app
+        run: |
+          npm install -D @playwright/test
+          npx playwright install --with-deps
+      
+      - name: 🔨 构建应用
+        working-directory: ./app
+        run: npm run build
+      
+      - name: 🚀 启动开发服务器
+        working-directory: ./app
+        run: npm start &
+        env:
+          CI: true
+      
+      - name: ⏳ 等待服务器启动
+        run: |
+          sleep 10
+          curl -f http://localhost:4200 || exit 1
+      
+      - name: 🧪 运行移动端测试
+        working-directory: ./app
+        run: npx playwright test --project="Mobile Chrome" --project="Mobile Safari"
+      
+      - name: 📊 上传测试报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-test-report
+          path: playwright-report/
+          retention-days: 30
+
+  # 测试总结
+  summary:
+    name: 📋 Test Summary
+    runs-on: ubuntu-latest
+    needs: [test, mobile-test]
+    if: always()
+    
+    steps:
+      - name: 📊 测试完成
+        run: |
+          echo "## 🧪 E2E 测试完成" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 桌面端测试：${{ needs.test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 移动端测试：${{ needs.mobile-test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "查看详细的测试报告请下载 artifacts。" >> $GITHUB_STEP_SUMMARY

@@ -12,14 +12,14 @@ import { TtsService } from '../../services/tts.service';
     <div class="settings-page">
       <div class="page-header">
         <a routerLink="/" class="back-btn">
-          <span class="material-icons-round">arrow_back</span> 返回
+          <span>⬅️</span> 返回
         </a>
-        <h1><span class="material-icons-round">settings</span> 设置</h1>
+        <h1>⚙️ 设置</h1>
       </div>
 
       <!-- 发音设置 -->
       <div class="settings-section">
-        <h3><span class="material-icons-round" style="font-size:1.25rem;vertical-align:middle;margin-right:4px;">volume_up</span>发音设置</h3>
+        <h3>🔊 发音设置</h3>
         
         <div class="setting-item">
           <label>语速</label>
@@ -50,17 +50,17 @@ import { TtsService } from '../../services/tts.service';
         </div>
 
         <button class="test-btn" (click)="testSpeech()">
-          <span class="material-icons-round" style="font-size:1rem;vertical-align:middle;margin-right:4px;">volume_up</span>测试发音
+          🔊 测试发音
         </button>
 
         <p class="setting-hint" *ngIf="!ttsSupported">
-          <span class="material-icons-round" style="font-size:1rem;vertical-align:middle;margin-right:4px;">warning</span>您的浏览器不支持语音合成
+          ⚠️ 您的浏览器不支持语音合成
         </p>
       </div>
 
       <!-- 学习设置 -->
       <div class="settings-section">
-        <h3><span class="material-icons-round" style="font-size:1.25rem;vertical-align:middle;margin-right:4px;">menu_book</span>学习设置</h3>
+        <h3>📚 学习设置</h3>
         
         <div class="setting-item">
           <label>每日学习目标</label>
@@ -231,22 +231,6 @@ import { TtsService } from '../../services/tts.service';
       margin: 0.5rem 0 0 0;
       color: #f59e0b;
       font-size: 0.875rem;
-    }
-
-    .material-icons-round {
-      font-family: 'Material Icons Round';
-      font-weight: normal;
-      font-style: normal;
-      font-size: 24px;
-      line-height: 1;
-      letter-spacing: normal;
-      text-transform: none;
-      display: inline-block;
-      white-space: nowrap;
-      word-wrap: normal;
-      direction: ltr;
-      -webkit-font-feature-settings: 'liga';
-      -webkit-font-smoothing: antialiased;
     }
 
     .toggle-label {
