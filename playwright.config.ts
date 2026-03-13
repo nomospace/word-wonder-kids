@@ -30,8 +30,8 @@ export default defineConfig({
   
   // 共享配置
   use: {
-    // 基础 URL（开发环境）
-    baseURL: 'http://localhost:3000',
+    // 基础 URL（Angular 默认端口 4200）
+    baseURL: 'http://localhost:4200',
     
     // 浏览器选项
     headless: true,
