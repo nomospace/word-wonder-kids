@@ -191,6 +191,25 @@ jobs:
 | 本地通过 CI 失败 | Node 版本不一致 | `.nvmrc` + pre-commit 检查 |
 | 本地通过 CI 失败 | peer dependency 冲突 | 降级依赖版本 + 本地验证 |
 | 本地通过 CI 失败 | **GitHub 缓存问题** | **npm ci fallback 到 npm install** |
+| E2E 测试失败 | **端口不匹配** | **检查 playwright baseURL** |
+
+### 端口问题详情
+
+**症状**: E2E 测试报错 "connection refused" 或 timeout
+
+**检查清单**:
+1. Playwright 配置的 `baseURL` 端口
+2. Angular/Vite 开发服务器端口
+3. workflow 中 `npm start` 的端口配置
+
+**Angular 默认端口**: 4200 (不是 3000!)
+
+```ts
+// playwright.config.ts ✅
+use: {
+  baseURL: 'http://localhost:4200',  // Angular 默认端口
+}
+```
 
 **核心原则**：
 1. 本地模拟 CI 环境（版本、命令、检查）
