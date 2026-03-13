@@ -177,17 +177,18 @@ export class WordService {
    */
   resetProgress(): void {
     this.learningProgress.next(new Map());
-    localStorage.removeItem('wordWonderProgress');
+    localStorage.removeItem('wwk_learningProgress');
+    localStorage.removeItem('wwk_currentGradeId');
   }
 
   private loadProgressFromStorage(): void {
     try {
-      const savedGrade = localStorage.getItem('currentGradeId');
+      const savedGrade = localStorage.getItem('wwk_currentGradeId');
       if (savedGrade) {
         this.currentGradeId.next(savedGrade);
       }
 
-      const savedProgress = localStorage.getItem('wordWonderProgress');
+      const savedProgress = localStorage.getItem('wwk_learningProgress');
       if (savedProgress) {
         const data = JSON.parse(savedProgress);
         const progressMap = new Map<number, LearningProgress>();
@@ -217,7 +218,7 @@ export class WordService {
           lastReviewedAt: progress.lastReviewedAt?.toISOString()
         };
       });
-      localStorage.setItem('wordWonderProgress', JSON.stringify(data));
+      localStorage.setItem('wwk_learningProgress', JSON.stringify(data));
     } catch (e) {
       console.error('Failed to save progress to storage', e);
     }
@@ -225,7 +226,7 @@ export class WordService {
 
   private saveToStorage(key: string, value: string): void {
     try {
-      localStorage.setItem(key, value);
+      localStorage.setItem(`wwk_${key}`, value);
     } catch (e) {
       console.error('Failed to save to storage', e);
     }
