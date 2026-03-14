@@ -1,407 +1,135 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { TtsService } from '../../services/tts.service';
+import { KiddoService } from '../../services/kiddo.service';
+import { TextbookVersion, UserProfile } from '../../models/kiddo.model';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <div class="settings-page">
-      <div class="page-header">
-        <a routerLink="/" class="back-btn">
-          <span>⬅️</span> 返回
-        </a>
-        <h1>⚙️ 设置</h1>
-      </div>
+    <div class="settings-container">
+      <header class="page-header">
+        <button class="back-btn" routerLink="/my">‹ 返回</button>
+        <h1 class="page-title">⚙️ 设置</h1>
+      </header>
 
-      <!-- 发音设置 -->
-      <div class="settings-section">
-        <h3>🔊 发音设置</h3>
-        
-        <div class="setting-item">
-          <label>语速</label>
-          <input 
-            type="range" 
-            min="0.5" 
-            max="1.5" 
-            step="0.1" 
-            [(ngModel)]="ttsRate"
-            (change)="testSpeech()"
-            class="range-input"
-          >
-          <span class="range-value">{{ ttsRate }}x</span>
+      <div class="settings-list">
+        <!-- 用户设置 -->
+        <div class="setting-group">
+          <h3 class="group-title">用户设置</h3>
+          <div class="setting-item">
+            <span class="setting-label">昵称</span>
+            <input type="text" [(ngModel)]="profile.nickname" (change)="saveProfile()" class="setting-input" />
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">头像</span>
+            <div class="avatar-select">
+              <span *ngFor="let a of avatars" class="avatar-option" [class.active]="profile.avatar === a" (click)="setAvatar(a)">{{ a }}</span>
+            </div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">年级</span>
+            <select [(ngModel)]="profile.grade" (change)="saveProfile()" class="setting-select">
+              <option *ngFor="let g of grades" [value]="g">{{ g }}年级</option>
+            </select>
+          </div>
         </div>
 
-        <div class="setting-item">
-          <label>音调</label>
-          <input 
-            type="range" 
-            min="0.5" 
-            max="1.5" 
-            step="0.1" 
-            [(ngModel)]="ttsPitch"
-            (change)="testSpeech()"
-            class="range-input"
-          >
-          <span class="range-value">{{ ttsPitch }}x</span>
+        <!-- 教材设置 -->
+        <div class="setting-group">
+          <h3 class="group-title">教材设置</h3>
+          <div class="setting-item">
+            <span class="setting-label">教材版本</span>
+            <select [(ngModel)]="profile.textbookVersion" (change)="saveProfile()" class="setting-select">
+              <option value="pep">人教版</option>
+              <option value="fltrp">外研版</option>
+              <option value="sujiao">苏教版</option>
+              <option value="bnu">北师大版</option>
+            </select>
+          </div>
         </div>
 
-        <button class="test-btn" (click)="testSpeech()">
-          🔊 测试发音
-        </button>
-
-        <p class="setting-hint" *ngIf="!ttsSupported">
-          ⚠️ 您的浏览器不支持语音合成
-        </p>
-      </div>
-
-      <!-- 学习设置 -->
-      <div class="settings-section">
-        <h3>📚 学习设置</h3>
-        
-        <div class="setting-item">
-          <label>每日学习目标</label>
-          <select [(ngModel)]="dailyGoal" class="select-input">
-            <option value="10">10 个单词</option>
-            <option value="20">20 个单词</option>
-            <option value="30">30 个单词</option>
-            <option value="50">50 个单词</option>
-          </select>
+        <!-- 护眼设置 -->
+        <div class="setting-group">
+          <h3 class="group-title">护眼设置</h3>
+          <div class="setting-item">
+            <span class="setting-label">护眼模式</span>
+            <label class="switch"><input type="checkbox" [(ngModel)]="eyeCareMode" /><span class="slider"></span></label>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">休息提醒</span>
+            <label class="switch"><input type="checkbox" [(ngModel)]="restReminder" /><span class="slider"></span></label>
+          </div>
         </div>
 
-        <div class="setting-item">
-          <label>学习提醒</label>
-          <label class="toggle-label">
-            <input type="checkbox" [(ngModel)]="enableReminder">
-            <span class="toggle-switch"></span>
-            <span class="toggle-text">启用每日提醒</span>
-          </label>
+        <!-- 其他 -->
+        <div class="setting-group">
+          <h3 class="group-title">其他</h3>
+          <div class="setting-item clickable" (click)="resetData()">
+            <span class="setting-label">重置学习数据</span>
+            <span class="setting-value">›</span>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">版本</span>
+            <span class="setting-value">v1.0.0</span>
+          </div>
         </div>
-
-        <div class="setting-item" *ngIf="enableReminder">
-          <label>提醒时间</label>
-          <input 
-            type="time" 
-            [(ngModel)]="reminderTime"
-            class="time-input"
-          >
-        </div>
-      </div>
-
-      <!-- 显示设置 -->
-      <div class="settings-section">
-        <h3>🎨 显示设置</h3>
-        
-        <div class="setting-item">
-          <label>字体大小</label>
-          <select [(ngModel)]="fontSize" class="select-input">
-            <option value="small">小</option>
-            <option value="medium">中</option>
-            <option value="large">大</option>
-          </select>
-        </div>
-
-        <div class="setting-item">
-          <label>深色模式</label>
-          <label class="toggle-label">
-            <input type="checkbox" [(ngModel)]="darkMode" (change)="toggleDarkMode()">
-            <span class="toggle-switch"></span>
-            <span class="toggle-text">启用深色模式</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- 关于 -->
-      <div class="settings-section about-section">
-        <h3>ℹ️ 关于</h3>
-        <div class="about-info">
-          <p><strong>Word Wonder Kids</strong></p>
-          <p>版本：1.0.0</p>
-          <p>使用 Angular 17+ 构建</p>
-          <p>单词来源：Oxford 3000, Dolch Sight Words, Fry Words</p>
-        </div>
-        <div class="links">
-          <a href="https://github.com/nomospace/word-wonder-kids" target="_blank" class="link-btn">
-            🦞 GitHub 项目
-          </a>
-        </div>
-      </div>
-
-      <!-- 清除数据 -->
-      <div class="settings-section danger-section">
-        <h3>⚠️ 危险操作</h3>
-        <button class="danger-btn" (click)="clearAllData()">
-          🗑️ 清除所有数据
-        </button>
       </div>
     </div>
   `,
   styles: [`
-    .settings-page {
-      min-height: 100vh;
-      background: #f5f7fa;
-      padding: 1rem;
-      padding-bottom: 80px;
-    }
-
-    .page-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .back-btn {
-      text-decoration: none;
-      color: #667eea;
-      font-weight: 600;
-    }
-
-    .page-header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-      color: #333;
-    }
-
-    .settings-section {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      margin-bottom: 1.5rem;
-    }
-
-    .settings-section h3 {
-      margin: 0 0 1rem 0;
-      color: #333;
-      font-size: 1.125rem;
-    }
-
-    .setting-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .setting-item:last-child {
-      border-bottom: none;
-    }
-
-    .setting-item label {
-      font-weight: 500;
-      color: #666;
-    }
-
-    .range-input {
-      width: 150px;
-    }
-
-    .range-value {
-      width: 40px;
-      text-align: right;
-      font-weight: 600;
-      color: #667eea;
-    }
-
-    .select-input, .time-input {
-      padding: 0.5rem;
-      border: 1px solid #e0e0e0;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-    }
-
-    .test-btn {
-      width: 100%;
-      padding: 0.75rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-
-    .setting-hint {
-      margin: 0.5rem 0 0 0;
-      color: #f59e0b;
-      font-size: 0.875rem;
-    }
-
-    .toggle-label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      cursor: pointer;
-    }
-
-    .toggle-label input {
-      display: none;
-    }
-
-    .toggle-switch {
-      width: 50px;
-      height: 26px;
-      background: #e0e0e0;
-      border-radius: 13px;
-      position: relative;
-      transition: background 0.3s;
-    }
-
-    .toggle-switch::after {
-      content: '';
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      background: white;
-      border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      transition: transform 0.3s;
-    }
-
-    .toggle-label input:checked + .toggle-switch {
-      background: #667eea;
-    }
-
-    .toggle-label input:checked + .toggle-switch::after {
-      transform: translateX(24px);
-    }
-
-    .toggle-text {
-      font-weight: 500;
-      color: #666;
-    }
-
-    .about-info {
-      color: #666;
-      line-height: 1.8;
-    }
-
-    .about-info p {
-      margin: 0.25rem 0;
-    }
-
-    .link-btn {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      text-decoration: none;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      margin-top: 1rem;
-    }
-
-    .danger-section {
-      border: 2px solid #fee2e2;
-    }
-
-    .danger-btn {
-      width: 100%;
-      padding: 1rem;
-      background: #fee2e2;
-      color: #dc2626;
-      border: none;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .danger-btn:hover {
-      background: #fecaca;
-    }
-
-    @media (max-width: 640px) {
-      .setting-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-      }
-
-      .range-input {
-        width: 100%;
-      }
-
-      .range-value {
-        width: auto;
-        text-align: left;
-      }
-    }
+    .settings-container { min-height: 100vh; background: #f5f5f5; }
+    .page-header { display: flex; align-items: center; padding: 16px; background: white; }
+    .back-btn { background: none; border: none; font-size: 16px; cursor: pointer; }
+    .page-title { flex: 1; text-align: center; font-size: 18px; }
+    .settings-list { padding: 16px; }
+    .setting-group { background: white; border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+    .group-title { font-size: 13px; color: #666; padding: 12px 16px 8px; margin: 0; }
+    .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid #f0f0f0; }
+    .setting-item:last-child { border: none; }
+    .setting-item.clickable { cursor: pointer; }
+    .setting-label { font-size: 15px; }
+    .setting-value { color: #999; }
+    .setting-input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+    .setting-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: white; }
+    .avatar-select { display: flex; gap: 8px; }
+    .avatar-option { font-size: 28px; padding: 4px; border-radius: 50%; cursor: pointer; }
+    .avatar-option.active { background: #e3f2fd; }
+    .switch { position: relative; width: 48px; height: 28px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: #ccc; border-radius: 28px; transition: .3s; }
+    .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .3s; }
+    input:checked + .slider { background: #4CAF50; }
+    input:checked + .slider:before { transform: translateX(20px); }
   `]
 })
-export class SettingsComponent implements OnInit {
-  ttsRate = 0.8;
-  ttsPitch = 1.0;
-  ttsSupported = true;
-  dailyGoal = '20';
-  enableReminder = false;
-  reminderTime = '19:00';
-  fontSize = 'medium';
-  darkMode = false;
+export class SettingsComponent {
+  profile: UserProfile;
+  avatars = ['🦊', '🐰', '🐼', '🐨', '🦁', '🐯', '🐻', '🐸'];
+  grades = [1, 2, 3, 4, 5, 6];
+  eyeCareMode = false;
+  restReminder = true;
 
-  constructor(private ttsService: TtsService) {}
-
-  ngOnInit(): void {
-    this.ttsSupported = this.ttsService.isSupported();
-    this.loadSettings();
+  constructor(private kiddoService: KiddoService) {
+    this.profile = this.kiddoService.getCurrentProfile();
   }
 
-  loadSettings(): void {
-    try {
-      const settings = localStorage.getItem('wordWonderSettings');
-      if (settings) {
-        const data = JSON.parse(settings);
-        this.ttsRate = data.ttsRate || 0.8;
-        this.ttsPitch = data.ttsPitch || 1.0;
-        this.dailyGoal = data.dailyGoal || '20';
-        this.enableReminder = data.enableReminder || false;
-        this.reminderTime = data.reminderTime || '19:00';
-        this.fontSize = data.fontSize || 'medium';
-        this.darkMode = data.darkMode || false;
-      }
-    } catch (e) {
-      console.error('Failed to load settings', e);
-    }
+  setAvatar(a: string): void {
+    this.profile.avatar = a;
+    this.saveProfile();
   }
 
-  saveSettings(): void {
-    try {
-      const settings = {
-        ttsRate: this.ttsRate,
-        ttsPitch: this.ttsPitch,
-        dailyGoal: this.dailyGoal,
-        enableReminder: this.enableReminder,
-        reminderTime: this.reminderTime,
-        fontSize: this.fontSize,
-        darkMode: this.darkMode
-      };
-      localStorage.setItem('wordWonderSettings', JSON.stringify(settings));
-    } catch (e) {
-      console.error('Failed to save settings', e);
-    }
+  saveProfile(): void {
+    this.kiddoService.updateUserProfile(this.profile);
   }
 
-  testSpeech(): void {
-    this.ttsService.speak('Hello! This is a test.', this.ttsRate, this.ttsPitch);
-    this.saveSettings();
-  }
-
-  toggleDarkMode(): void {
-    document.body.classList.toggle('dark-mode', this.darkMode);
-    this.saveSettings();
-  }
-
-  clearAllData(): void {
-    if (confirm('确定要清除所有数据吗？此操作不可恢复！')) {
-      localStorage.clear();
-      location.reload();
+  resetData(): void {
+    if (confirm('确定要重置所有学习数据吗？此操作不可恢复！')) {
+      this.kiddoService.resetAll();
+      alert('数据已重置');
     }
   }
 }
